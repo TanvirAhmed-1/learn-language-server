@@ -66,31 +66,20 @@ async function run() {
 
   app.get("/tutorials/:id",async(req,res)=>{
      const id=req.params.id
-     const query={_id:new ObjectId(id)}
+     const query={ _id:new ObjectId(id)}
      const result=await TutorialsCollection.findOne(query)
      res.send(result)
   })
 
+  app.get("/tutorials/language/:language",async(req,res)=>{
+    const language= req.params.language;
+    const query = { language: language };
+    const result= await TutorialsCollection.find(query).toArray()
+    res.send(result)
+ })
 
+//user data update
 
-  
-// _id
-// 67cffff78fab99957fe68573
-// name
-// "Tanvir Ahmed"
-// email
-// "ntanvirahmed123@gmail.com"
-// image
-// "https://i.ibb.co.com/Vp0nZTrL/81p-Rp-AGk-GUL-AC-SL1500.jpg"
-// review
-// "4"
-// language
-// "javascript"
-// price
-// "900 Taka"
-// description
-// "fghjkl;'"
-  //Data update
   app.put("/tutorials/:id",async(req,res)=>{
     const id=req.params.id
     const data=req.body
