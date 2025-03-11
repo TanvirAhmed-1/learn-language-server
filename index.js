@@ -47,19 +47,69 @@ async function run() {
   })
 
   // tutorial get
-  app.get("/tutorial",async(req,res)=>{
+  app.get("/tutorials",async(req,res)=>{
     const result=await TutorialsCollection.find().toArray()
     res.send(result)
   })
 
   //Delete tutorial
 
-  app.delete("/tutorial/:id",async(req,res)=>{
+  app.delete("/tutorials/:id",async(req,res)=>{
     const id=req.params.id
     console.log(id)
     const query={_id:new ObjectId(id)}
     const result = await TutorialsCollection.deleteOne(query)
     res.send(result)
+  })
+
+  // id base data fetch
+
+  app.get("/tutorials/:id",async(req,res)=>{
+     const id=req.params.id
+     const query={_id:new ObjectId(id)}
+     const result=await TutorialsCollection.findOne(query)
+     res.send(result)
+  })
+
+
+
+  
+// _id
+// 67cffff78fab99957fe68573
+// name
+// "Tanvir Ahmed"
+// email
+// "ntanvirahmed123@gmail.com"
+// image
+// "https://i.ibb.co.com/Vp0nZTrL/81p-Rp-AGk-GUL-AC-SL1500.jpg"
+// review
+// "4"
+// language
+// "javascript"
+// price
+// "900 Taka"
+// description
+// "fghjkl;'"
+  //Data update
+  app.put("/tutorials/:id",async(req,res)=>{
+    const id=req.params.id
+    const data=req.body
+    console.log(data)
+    const filter={_id:new ObjectId(id)}
+    const options = { upsert: true };
+    const updateDoc = {
+        $set: {
+          name:data.name,
+          email:data.email,
+          image:data.image,
+          language:data.language,
+          price:data.price,
+          description:data.description
+
+        },
+      };
+      const result=await TutorialsCollection.updateOne(filter,updateDoc,options)
+      res.send(result)
   })
 
 
