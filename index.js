@@ -61,6 +61,21 @@ async function run() {
     const result = await TutorialsCollection.deleteOne(query)
     res.send(result)
   })
+//category api create
+
+// app.get("/tutorials/categories", async(req , res)=>{
+//    const categories=await TutorialsCollection.distinct("language")
+//    res.send(categories)
+// })
+
+app.get("/tutorials/categories", async (req, res) => {
+  const data = await TutorialsCollection.find().toArray();
+  const categories = [...new Set(data.map(item => item.language))];
+  res.send(categories);
+});
+
+
+
 
   // id base data fetch
 
@@ -92,6 +107,7 @@ async function run() {
           email:data.email,
           image:data.image,
           language:data.language,
+          review:data.review,
           price:data.price,
           description:data.description
 
