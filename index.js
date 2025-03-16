@@ -36,6 +36,26 @@ async function run() {
     // await client.connect();
 
   const TutorialsCollection=client.db("learn-language").collection("Tutorials")
+  const UserCollection=client.db("learn-language").collection("User")
+
+// user api
+app.post("/users", async(req,res)=>{
+  const data=req.body
+  console.log(data)
+  const result=await UserCollection.insertOne(data)
+  res.send(result)
+})
+
+
+// user get
+
+app.get("/users",async(req,res)=>{
+  const data=await UserCollection.find().toArray();
+  // const email=[...new Set(data.map(d=>d.name))]
+  res.send(data)
+})
+
+
 
 
   //Tutorials data post
@@ -74,7 +94,13 @@ app.get("/tutorials/categories", async (req, res) => {
   res.send(categories);
 });
 
+// total  tutors  count api
 
+app.get("/tutorials/tutors",async(req,res)=>{
+  const data=await TutorialsCollection.find().toArray();
+  const tutors=[...new Set(data.map(t=>t.name))]
+  res.send(tutors)
+});
 
 
   // id base data fetch
