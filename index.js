@@ -90,9 +90,29 @@ app.get("/users",async(req,res)=>{
 
 app.get("/tutorials/categories", async (req, res) => {
   const data = await TutorialsCollection.find().toArray();
-  const categories = [...new Set(data.map(item => item.language))];
-  res.send(categories);
+  const languageCounts = data.reduce((acc, item) => {
+    const language = item.language;
+    acc[language] = (acc[language] || 0) + 1;
+    return acc;
+  }, {});
+
+  // JSON formate 
+  const response = Object.keys(languageCounts).map(language => ({
+    language: language,
+    totalTutors: languageCounts[language],
+  }));
+
+  res.send(response);
 });
+
+// total specific  language
+app.get('/tutorials/language',async(req,res)=>{
+  const language=req.query.language
+  const query={language:language}
+  const data=await TutorialsCollection.find(query).toArray()
+  res.send(data)
+
+})
 
 // total  tutors  count api
 
