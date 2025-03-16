@@ -12,13 +12,9 @@ app.use(cors())
 //learn-language
 //HNOmghSJzAGTx43Z
 
-// console.log(process.env.USER_DATA)
-// console.log(process.env.USER_PASS)
 
 const uri = `mongodb+srv://${process.env.USER_DATA}:${process.env.USER_PASS}@cluster0.0p516.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-
-// const uri = "mongodb+srv://learn-language:HNOmghSJzAGTx43Z@cluster0.0p516.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -81,12 +77,7 @@ app.get("/users",async(req,res)=>{
     const result = await TutorialsCollection.deleteOne(query)
     res.send(result)
   })
-//category api create
 
-// app.get("/tutorials/categories", async(req , res)=>{
-//    const categories=await TutorialsCollection.distinct("language")
-//    res.send(categories)
-// })
 
 app.get("/tutorials/categories", async (req, res) => {
   const data = await TutorialsCollection.find().toArray();
