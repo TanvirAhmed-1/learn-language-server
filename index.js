@@ -33,6 +33,7 @@ async function run() {
 
   const TutorialsCollection=client.db("learn-language").collection("Tutorials")
   const UserCollection=client.db("learn-language").collection("User")
+  const BookTutorialsCollection=client.db("learn-language").collection("Book-Tutorials")
 
 // user api
 app.post("/users", async(req,res)=>{
@@ -40,6 +41,48 @@ app.post("/users", async(req,res)=>{
   console.log(data)
   const result=await UserCollection.insertOne(data)
   res.send(result)
+})
+
+
+//book Tutorials post api
+
+app.post("/book/tutorials",async(req,res)=>{
+  const data=req.body
+  const result = await BookTutorialsCollection.insertOne(data);
+  res.send(result)
+})
+
+//get book tutorials api
+
+app.get("/book/tutorials",async(req,res)=>{
+  const email=req.query.email
+  const query={email:email}
+  const result=await BookTutorialsCollection.find(query).toArray()
+  res.send(result)
+})
+
+
+app.patch("/book/tutorial/review/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log("tanvir",id)
+  const query = { _id: new ObjectId(id) };
+  const updateDoc = { $inc: { review: 1 } };
+
+  const result = await BookTutorialsCollection.updateOne(query, updateDoc);
+  res.send(result);
+});
+
+// review count
+app.get("/tutorial/review/count",async(req,res)=>{
+  const result=await BookTutorialsCollection.aggregate([
+    {
+      $group:{
+        _id:null,
+        TotalReview:{$sum:"$review"}
+      }
+    }
+  ]).toArray();
+  res.send({ totalReviews: result[0]?.TotalReview || 0 });
 })
 
 
