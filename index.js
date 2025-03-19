@@ -108,8 +108,8 @@ async function run() {
 
     app.get("/book/tutorials",verifyToken, async (req, res) => {
       const email = req.query.email;
-      console.log("tanvir",req.cookies?.token)
-    // token email !== query email
+      // console.log("book",req.cookies?.token)
+   
       if (req.user.email !== req.query.email) {
           return res.status(403).send({ message: 'forbidden access' })
       }
@@ -165,7 +165,7 @@ async function run() {
     //email base data fetch
     app.get("/tutorials/email",verifyToken, async(req,res)=>{
       const email=req.query.email
-      console.log("email",req.cookies?.token)
+      // console.log("email",req.cookies?.token)
       if (req.user.email !== req.query.email) {
         return res.status(403).send({ message: 'forbidden access' })
     }
