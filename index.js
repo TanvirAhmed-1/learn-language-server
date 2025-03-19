@@ -162,6 +162,17 @@ async function run() {
       const result = await TutorialsCollection.find().toArray();
       res.send(result);
     });
+    //email base data fetch
+    app.get("/tutorials/email",verifyToken, async(req,res)=>{
+      const email=req.query.email
+      console.log("email",req.cookies?.token)
+      if (req.user.email !== req.query.email) {
+        return res.status(403).send({ message: 'forbidden access' })
+    }
+      const query={email:email}
+      const result=await TutorialsCollection.find(query).toArray()
+      res.send(result)
+    })
 
     //Delete tutorial
 
